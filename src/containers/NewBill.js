@@ -26,12 +26,12 @@ export default class NewBill {
     // ajout vérificationn de l'extension du fichier : ok pour jpg jpeg et png
     const fileExtension = fileName.split(".").pop().toLowerCase();
 
-    if (["jpeg", "jpg", "png"].includes(fileExtension)) {
-      const formData = new FormData();
-      const email = JSON.parse(localStorage.getItem("user")).email;
-      formData.append("file", file);
+    const formData = new FormData();
+    const email = JSON.parse(localStorage.getItem("user")).email;
+    formData.append("file", file);
+    const extenssions = ['jpeg', 'png', 'jpg'];
+    if (extenssions.includes(fileExtension)) {
       formData.append("email", email);
-
       this.store
         .bills()
         .create({
