@@ -81,7 +81,7 @@ describe("Given I am connected as an employee", () => {
     expect(window.alert).toHaveBeenCalled()
   })
 })
- 
+ //test integration POST
 describe('Given I am a user connected as Employee', () => {
   describe("When I submit the form completed", () => {
     test("Then the bill is created", () => {
@@ -119,7 +119,29 @@ describe('Given I am a user connected as Employee', () => {
       expect(handleSubmit).toHaveBeenCalled()
       expect(newBill.updateBill).toHaveBeenCalled()
     })
- 
+    test('fetches error from an API and fails with 404 error', async () => {
+      jest.spyOn(mockStore, 'bills');
+      jest.spyOn(console, 'error').mockImplementation(() => { });
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+      Object.defineProperty(window, 'location', { value: { hash: ROUTES_PATH['NewBill'] } });
+      window.localStorage.setItem('user', JSON.stringify({ type: 'Employee' }));
+      document.body.innerHTML = `<div id="root"></div>`;
+      router();
+      const onNavigate = (pathname) => { document.body.innerHTML = ROUTES({ pathname }); }
+      mockStore.bills = jest.fn().mockImplementation(() => {
+        return {
+          update: () => Promise.reject(new Error('Erreur 404')),
+          list: () => Promise.reject(new Error('Erreur 404'))
+        };
+      });
+      const newBill = new NewBill({ document, onNavigate, store: mockStore, localStorage: window.localStorage });
+      const form = screen.getByTestId('form-new-bill');
+      const handleSubmit = jest.fn((e) => newBill.handleSubmit(e));
+      form.addEventListener('submit', handleSubmit);
+      fireEvent.submit(form);
+      await new Promise(process.nextTick);
+      expect(console.error).toBeCalled();
+    });
     test('fetches error from an API and fails with 500 error', async () => {
       jest.spyOn(mockStore, 'bills')
       jest.spyOn(console, 'error').mockImplementation(() => { })

@@ -42,11 +42,11 @@ export default class {
         .list()
         .then((snapshot) => {
           // Tri des factures du plus ancien au plus récent basé sur la date formatée
-          // snapshot.sort((a, b) => {
-          //   const dateA = new Date(a.date);
-          //   const dateB = new Date(b.date);
-          //   return dateB - dateA;
-          // });
+          snapshot.sort((a, b) => {
+             const dateA = new Date(a.date);
+             const dateB = new Date(b.date);
+             return dateB - dateA;
+           });
           const bills = snapshot.map((doc) => {
             try {
               return {

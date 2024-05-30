@@ -78,9 +78,8 @@ describe("Given I am connected as an employee", () => {
             /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i
           )
           .map((a) => a.innerHTML);
-        // correction de antichrono a chrono et de a<b a a>b.
-        const chrono = (a, b) => (a < b ? 1 : -1);
-        const datesSorted = [...dates].sort(chrono);
+        const antiChrono = (a, b) => (a < b ? 1 : -1);
+        const datesSorted = [...dates].sort(antiChrono);
         expect(dates).toEqual(datesSorted);
         //ajout test si title est bien 'Mes notes de frais'
       });

@@ -153,7 +153,7 @@ export default class {
       $(`#status-bills-container${this.index}`).html("");
       this.counter++;
     }
-    // ajout de #status-bills-container${this.index}
+    // ajout de #status-bills-container${this.index} : groupe de tickets
     // isole les événements de clic pour chaque groupe de tickets selon leur statut, évitant
     // ainsi que les actions dans un groupe n'affectent les autres
     bills.forEach((bill) => {
